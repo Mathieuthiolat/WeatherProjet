@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">weather-2</string>
+    <string name="home_greeting">Hello %s</string>
+    <string name="home_welcome">Bienvenue sur notre application météo</string>
+    <string name="home_button_screen_1">Résumé Méteo</string>
+    <string name="home_button_screen_2">Prévisions habillage</string>
+    <string name="home_today">Today</string>
+    <string name="title_activity_main2">InfoWeather</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="Villelyon">Lyon</string>
+    <string name="temperature">Température</string>
+    <string name="number_28">28</string>
+    <string name="celsius">°C</string>
+    <string name="humidite">Humidité</string>
+    <string name="number_80">80</string>
+    <string name="poucentage">%</string>
+    <string name="actualiser">Actualiser</string>
+    <string name="code_postal">Code postal</string>
+    <string name="introActyInfo">En ce jour du %s</string>
+</resources>

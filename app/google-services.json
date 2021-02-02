@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "931052467799",
+    "project_id": "webtech-android-2",
+    "storage_bucket": "webtech-android-2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:931052467799:android:d60c69d3a6da538ebed512",
+        "android_client_info": {
+          "package_name": "com.example.weather_2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "931052467799-f0r3u0pts1idmrnee19r6qrdb24mgv3t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAWVAQxiXpaOleLj-a8ZBrIRGgw1_D8ujY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "931052467799-f0r3u0pts1idmrnee19r6qrdb24mgv3t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

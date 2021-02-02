@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/TextViewHomeGreeting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/home_greeting"
+        android:textSize="24sp"
+        android:layout_marginTop="64dip"
+        android:layout_marginBottom="16dip"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/TextViewHomeWelcome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/TextViewHomeGreeting"
+        android:layout_centerHorizontal="true"
+        android:text="@string/home_welcome" />
+
+    <ImageView
+        android:id="@+id/ImageViewHomeLogo"
+        android:layout_width="240dip"
+        android:layout_below="@+id/TextViewHomeWelcome"
+        android:layout_centerHorizontal="true"
+        android:layout_height="wrap_content"
+        android:src="@drawable/logo_white_cropped"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_below="@+id/ImageViewHomeLogo"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/ButtonHomeScreen1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            style="@style/ButtonDefault"
+            android:text="@string/home_button_screen_1"/>
+
+        <Button
+            android:id="@+id/ButtonHomeScreen2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:text="@string/home_button_screen_2"/>
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/ImageViewHomeMeteoFranceLogo"
+        android:layout_width="260dip"
+        android:layout_height="100dip"
+        android:src="@drawable/meteo_france_logo"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        />
+
+</RelativeLayout>
