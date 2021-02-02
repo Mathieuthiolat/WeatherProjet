@@ -21,5 +21,8 @@
     <string name="poucentage">%</string>
     <string name="actualiser">Actualiser</string>
     <string name="code_postal">Code postal</string>
-    <string name="introActyInfo">En ce jour du %s</string>
+    <string name="introActyInfo">Pour demain prévoyez :</string>
+    <string name="getLocation">Utiliser ma localisation</string>
+    <string name="location">A %s</string>
+    <string name="messageEmptyCache">Par défault c\'est la vous aurais la région du Var.\n Mais vous pouvez utiliser la géoloc de votre téléphone.</string>
 </resources>
