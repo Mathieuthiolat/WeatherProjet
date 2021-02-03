@@ -7,8 +7,6 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -19,11 +17,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -31,32 +26,17 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.math.RoundingMode;
-import java.nio.charset.StandardCharsets;
-import java.text.BreakIterator;
-import java.text.DateFormat;
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 public class WeatherInfo extends AppCompatActivity {
-    private static final String FILENAME = "last-weather";
-
-    private TextView mTextCacheEmpty;
     private ImageView mImageViewHintHabit;
     private ImageButton getCurrentLocation;
     private LocationManager locationManager;
@@ -73,7 +53,38 @@ public class WeatherInfo extends AppCompatActivity {
             actionBar.setHomeButtonEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-       getCurrentWeather("75500","fr");
+
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        if(ContextCompat.checkSelfPermission(WeatherInfo.this, Manifest.permission.ACCESS_COARSE_LOCATION)== PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(WeatherInfo.this,Manifest.permission.ACCESS_FINE_LOCATION)== PackageManager.PERMISSION_GRANTED ){
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 3600, 1, new LocationListener() {
+                @Override
+                public void onLocationChanged(Location location) {
+                    try {
+                        getcurrentZipCode(location.getLatitude(),location.getLongitude());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onStatusChanged(String provider, int status, Bundle extras) {
+
+                }
+
+                @Override
+                public void onProviderEnabled(String provider) {
+
+                }
+
+                @Override
+                public void onProviderDisabled(String provider) {
+
+                }
+            });
+        }else{
+            getCurrentWeather("83300","fr");
+        }
 
 
         //On recupère les coords pour trouver le zipcode plus tard
@@ -81,38 +92,36 @@ public class WeatherInfo extends AppCompatActivity {
         getCurrentLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
                 if(ContextCompat.checkSelfPermission(WeatherInfo.this, Manifest.permission.ACCESS_COARSE_LOCATION)!= PackageManager.PERMISSION_GRANTED &&
                         ContextCompat.checkSelfPermission(WeatherInfo.this,Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED ){
                     ActivityCompat.requestPermissions(WeatherInfo.this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION},1);
-                }
-
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 3600, 1, new LocationListener() {
-                    @Override
-                    public void onLocationChanged(Location location) {
-                        try {
-                            getcurrentZipCode(location.getLatitude(),location.getLongitude());
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                }else{
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 3600, 1, new LocationListener() {
+                        @Override
+                        public void onLocationChanged(Location location) {
+                            try {
+                                getcurrentZipCode(location.getLatitude(),location.getLongitude());
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onStatusChanged(String provider, int status, Bundle extras) {
+                        @Override
+                        public void onStatusChanged(String provider, int status, Bundle extras) {
 
-                    }
+                        }
 
-                    @Override
-                    public void onProviderEnabled(String provider) {
+                        @Override
+                        public void onProviderEnabled(String provider) {
 
-                    }
+                        }
 
-                    @Override
-                    public void onProviderDisabled(String provider) {
+                        @Override
+                        public void onProviderDisabled(String provider) {
 
-                    }
-                });
-
+                        }
+                    });
+                }
             }
         });
     }
@@ -139,25 +148,16 @@ public class WeatherInfo extends AppCompatActivity {
         Geocoder geocoder = new Geocoder(this, Locale.ENGLISH);
         List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
         Address address=null;
-        String addr="";
         String zipcode="";
-        String city="";
-        String state="";
         String Country="";
         if (addresses != null && addresses.size() > 0) {
-
-            addr = addresses.get(0).getAddressLine(0) + "," + addresses.get(0).getSubAdminArea();
-            city = addresses.get(0).getLocality();
-            state = addresses.get(0).getAdminArea();
             Country = addresses.get(0).getCountryCode();
-
             for (int i = 0; i < addresses.size(); i++) {
                 address = addresses.get(i);
                 if (address.getPostalCode() != null) {
                     zipcode = address.getPostalCode();
                     break;
                 }
-
             }
         }
         if(zipcode != null ){
@@ -167,6 +167,7 @@ public class WeatherInfo extends AppCompatActivity {
     private void getCurrentWeather(String zipCode,String Country) {
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
+        //Ancienne requete
         //String url = "https://api.openweathermap.org/data/2.5/weather?zip=" + zipCode +','+Country+ "&appid=7b84cb6c4628843c95c6aa9723b671fb";
         String url = "https://api.openweathermap.org/data/2.5/forecast/daily?q="+zipCode+"&cnt=2&appid=7b84cb6c4628843c95c6aa9723b671fb";
 
@@ -182,7 +183,6 @@ public class WeatherInfo extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.d("Error", error.toString());
-
                     }
                 });
 
@@ -192,13 +192,7 @@ public class WeatherInfo extends AppCompatActivity {
         try {
             JSONArray listJour = response.getJSONArray("list");
             JSONObject secondDay = listJour.getJSONObject(1);
-
-            double temp = secondDay.getDouble("deg");
             int cloudness = secondDay.getInt("clouds");
-            temp -= 273.15;
-            DecimalFormat df = new DecimalFormat("#");
-            df.setRoundingMode(RoundingMode.CEILING);
-            String fTemp = df.format(temp);
 
             JSONArray weather = secondDay.getJSONArray("weather");
             JSONObject firstWeather = weather.getJSONObject(0);
@@ -212,7 +206,6 @@ public class WeatherInfo extends AppCompatActivity {
             }else{
                 mImageViewHintHabit.setImageResource(R.drawable.fine);
             }
-
         } catch (Exception e) {
             e.getStackTrace();
         }
